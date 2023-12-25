@@ -1,0 +1,230 @@
+1] Array Manipulation
+
+function getUniqueElements(inputArray) {
+    var uniqueArray = [];
+
+    for (var i = 0; i < inputArray.length; i++) {
+        var currentElement = inputArray[i];
+        if (uniqueArray.indexOf(currentElement) === -1) {
+            uniqueArray.push(currentElement);
+        }
+    }
+
+    return uniqueArray;
+}
+
+// Example usage:
+var inputArray = [1, 2, 3, 4, 1, 2, 5];
+var uniqueElements = getUniqueElements(inputArray);
+console.log(uniqueElements);  // Output: [1, 2, 3, 4, 5]
+
+
+2]object operation
+
+function mergeCarObjects(car1, car2) {
+    var mergedCar = {};
+
+    for (var prop in car1) {
+        if (car1.hasOwnProperty(prop)) {
+            mergedCar[prop] = car1[prop];
+        }
+    }
+
+    for (var prop in car2) {
+        if (car2.hasOwnProperty(prop)) {
+            mergedCar[prop] = car2[prop];
+        }
+    }
+
+    return mergedCar;
+}
+
+// Example usage:
+var car1 = { brand: 'Toyota', model: 'Camry', year: 2020 };
+var car2 = { color: 'Blue', price: 25000 };
+var mergedCar = mergeCarObjects(car1, car2);
+console.log(mergedCar);  // Output: { brand: 'Toyota', model: 'Camry', year: 2020, color: 'Blue', price: 25000 }
+
+
+
+3]logical operation
+
+function mergeCarObjects(car1, car2) {
+    var mergedCar = {};
+
+    for (var prop in car1) {
+        if (car1.hasOwnProperty(prop)) {
+            mergedCar[prop] = car1[prop];
+        }
+    }
+
+    for (var prop in car2) {
+        if (car2.hasOwnProperty(prop)) {
+            mergedCar[prop] = car2[prop];
+        }
+    }
+
+    return mergedCar;
+}
+
+// Example usage:
+var car1 = { brand: 'Toyota', model: 'Camry', year: 2020 };
+var car2 = { color: 'Blue', price: 25000 };
+var mergedCar = mergeCarObjects(car1, car2);
+console.log(mergedCar);  // Output: { brand: 'Toyota', model: 'Camry', year: 2020, color: 'Blue', price: 25000 }
+
+
+
+
+Task 4]
+// Import necessary modules
+import express, { Application, Request, Response } from 'express';
+
+// Create an Express application
+const app: Application = express();
+
+// In-memory data store (replace with a database in a real-world scenario)
+let products: { id: number; name: string; price: number }[] = [
+    { id: 1, name: 'Product A', price: 20 },
+    { id: 2, name: 'Product B', price: 30 },
+    // Add more sample data as needed
+];
+
+// Middleware to parse incoming JSON data
+app.use(express.json());
+
+// Endpoints
+app.get('/api/products', (req: Request, res: Response) => {
+    res.json(products);
+});
+
+app.get('/api/products/:id', (req: Request, res: Response) => {
+    const productId = parseInt(req.params.id, 10);
+    const product = products.find((p) => p.id === productId);
+
+    if (product) {
+        res.json(product);
+    } else {
+        res.status(404).json({ message: 'Product not found' });
+    }
+});
+
+app.post('/api/products', (req: Request, res: Response) => {
+    const { name, price } = req.body;
+    const newProduct = { id: products.length + 1, name, price };
+    products.push(newProduct);
+    res.status(201).json(newProduct);
+});
+
+app.put('/api/products/:id', (req: Request, res: Response) => {
+    const productId = parseInt(req.params.id, 10);
+    const productIndex = products.findIndex((p) => p.id === productId);
+
+    if (productIndex !== -1) {
+        products[productIndex] = { ...products[productIndex], ...req.body };
+        res.json(products[productIndex]);
+    } else {
+        res.status(404).json({ message: 'Product not found' });
+    }
+});
+
+app.delete('/api/products/:id', (req: Request, res: Response) => {
+    const productId = parseInt(req.params.id, 10);
+    products = products.filter((p) => p.id !== productId);
+    res.json({ message: 'Product deleted successfully' });
+});
+
+// Start the server
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+
+
+
+
+task 5]
+
+
+// Middleware function for logging requests
+const requestLoggerMiddleware = (req: Request, res: Response, next: Function) => {
+    const timestamp = new Date().toISOString();
+    const method = req.method;
+    const url = req.url;
+
+    console.log(`${timestamp} - ${method} ${url}`);
+    next(); // Continue to the next middleware or route handler
+};
+
+// Use the middleware for all routes
+app.use(requestLoggerMiddleware);
+
+
+
+task6]
+
+// Import necessary modules and dependencies
+import request from 'supertest';
+import app from '../src/app'; // Assuming your main application file is named 'app.ts'
+
+describe('API Endpoints', () => {
+    // Test case for GET /api/products
+    it('should retrieve a list of products', async () => {
+        const response = await request(app).get('/api/products');
+        expect(response.status).toBe(200);
+        expect(response.body).toBeInstanceOf(Array);
+        // Add more assertions based on your expected response
+    });
+
+    // Test case for GET /api/products/:id
+    it('should retrieve details of a specific product by ID', async () => {
+        const productId = 1; // Assuming there is a product with ID 1 in your in-memory data store
+        const response = await request(app).get(`/api/products/${productId}`);
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('id', productId);
+        // Add more assertions based on your expected response
+    });
+
+    // Add more test cases for other endpoints and scenarios
+});
+
+
+task 7]
+
+# Your Project Name
+
+## Description
+
+Brief description of your project.
+
+## How to Run Locally
+
+1. Clone the repository.
+2. Install dependencies: `npm install`.
+3. Start the server: `npm start`.
+
+## API Endpoints
+
+- **GET /api/products**: Retrieve a list of products.
+  - Example: `curl http://localhost:3000/api/products`
+
+- **GET /api/products/:id**: Retrieve details of a specific product by ID.
+  - Example: `curl http://localhost:3000/api/products/1`
+
+- **POST /api/products**: Create a new product.
+  - Example: `curl -X POST -H "Content-Type: application/json" -d '{"name": "New Product", "price": 50}' http://localhost:3000/api/products`
+
+- **PUT /api/products/:id**: Update details of a specific product by ID.
+  - Example: `curl -X PUT -H "Content-Type: application/json" -d '{"name": "Updated Product", "price": 60}' http://localhost:3000/api/products/1`
+
+- **DELETE /api/products/:id**: Delete a product by ID.
+  - Example: `curl -X DELETE http://localhost:3000/api/products/1`
+
+## Unit Testing
+
+1. Run tests: `npm test`.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
